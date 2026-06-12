@@ -23,6 +23,7 @@ interface DetailItem {
 
 interface PopoverProps {
   item: DetailItem;
+  balance: number;
   canAfford: boolean;
   owned: boolean;
   playerLevel: number;
@@ -30,7 +31,7 @@ interface PopoverProps {
   onClose: () => void;
 }
 
-function DetailPopover({ item, canAfford, owned, playerLevel, onBuy, onClose }: PopoverProps) {
+function DetailPopover({ item, balance, canAfford, owned, playerLevel, onBuy, onClose }: PopoverProps) {
   const locked = item.levelRequired > playerLevel;
   return (
     <div
@@ -95,7 +96,7 @@ function DetailPopover({ item, canAfford, owned, playerLevel, onBuy, onClose }: 
         >
           {owned ? 'Already Owned'
             : locked ? `Locked — Level ${item.levelRequired}`
-            : !canAfford ? `Need ${formatMoney(item.cost - useGameStore.getState().bank.balance)} more`
+            : !canAfford ? `Need ${formatMoney(item.cost - balance)} more`
             : `Buy & Place — ${formatMoney(item.cost)}`}
         </button>
 
@@ -545,6 +546,7 @@ export default function Shop() {
       {detail && (
         <DetailPopover
           item={detail}
+          balance={bank.balance}
           canAfford={bank.balance >= detail.cost}
           owned={detail.type === 'equip' && equipment.ownedItemIds.includes(detail.id)}
           playerLevel={player.level}
