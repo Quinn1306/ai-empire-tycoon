@@ -376,23 +376,48 @@ export const useGameStore = create<GameStore>()(
         const { floatingTexts, pendingLevelUp, pendingPlacement, ...rest } = state;
         return rest;
       },
-      migrate: (persisted: unknown) => {
-        // Migrate v1 saves (placedItems) to v2 (floorItems/wallItems)
-        const p = persisted as Record<string, unknown>;
-        if (p?.office && typeof p.office === 'object') {
-          const office = p.office as Record<string, unknown>;
-          if (Array.isArray(office.placedItems) && !office.floorItems) {
-            const all = office.placedItems as Array<{ itemId: string; gridX: number; gridY: number; instanceId: string }>;
-            const floor = all.filter(i => { const d = FURNITURE_ITEMS.find(f => f.id === i.itemId); return !d || d.mount === 'floor'; });
-            const wall  = all.filter(i => { const d = FURNITURE_ITEMS.find(f => f.id === i.itemId); return d?.mount === 'wall'; });
-            office.floorItems = floor;
-            office.wallItems  = wall;
-            delete office.placedItems;
+      migrate: (persisted: unknown, fromVersion: number) => {
+        try {
+          const p = (persisted ?? {}) as Record<string, unknown>;
+
+          // Ensure office exists
+          if (!p.office || typeof p.office !== 'object') {
+            p.office = { floorItems: [], wallItems: [], wallStyle: 'white', floorStyle: 'wood' };
           }
-          if (!office.floorItems) office.floorItems = [];
-          if (!office.wallItems)  office.wallItems  = [];
+          const office = p.office as Record<string, unknown>;
+
+          // v0/v1 → v2: convert placedItems to floorItems/wallItems
+          if (fromVersion < 2) {
+            if (Array.isArray(office.placedItems)) {
+              const all = office.placedItems as Array<{ itemId: string; gridX: number; gridY: number; instanceId: string }>;
+              office.floorItems = all.filter(i => { const d = FURNITURE_ITEMS.find(f => f.id === i.itemId); return !d || d.mount === 'floor'; });
+              office.wallItems  = all.filter(i => { const d = FURNITURE_ITEMS.find(f => f.id === i.itemId); return d?.mount === 'wall'; });
+              delete office.placedItems;
+            }
+          }
+
+          // Ensure required office fields
+          if (!Array.isArray(office.floorItems)) office.floorItems = [];
+          if (!Array.isArray(office.wallItems))  office.wallItems  = [];
+          if (!office.wallStyle)  office.wallStyle  = 'white';
+          if (!office.floorStyle) office.floorStyle = 'wood';
+
+          // Ensure player fields for saves missing new keys
+          if (p.player && typeof p.player === 'object') {
+            const player = p.player as Record<string, unknown>;
+            if (!Array.isArray(player.unlockedSkills)) player.unlockedSkills = [];
+            if (typeof player.skillPoints !== 'number') player.skillPoints = 0;
+          }
+
+          // Preserve screen: if they were mid-game, keep them in game
+          if (!p.screen) p.screen = 'character-creation';
+          if (!p.business && p.screen === 'game') p.screen = 'character-creation';
+
+          return p as unknown as GameState;
+        } catch {
+          // If migration fails for any reason, return safe defaults
+          return { ...DEFAULT_STATE } as GameState;
         }
-        return persisted as GameState;
       },
       version: 2,
     }
