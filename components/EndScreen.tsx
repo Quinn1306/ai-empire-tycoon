@@ -105,7 +105,7 @@ export default function EndScreen() {
               { label: 'Cash on Hand', value: formatMoney(bank.balance), color: '#10B981' },
               { label: 'Business', value: bizName, color: '#A78BFA' },
               { label: 'PC Tier', value: `Tier ${equipment.pcTier}/6`, color: '#3B82F6' },
-              { label: 'Office Items', value: `${office.placedItems.length} placed`, color: '#EC4899' },
+              { label: 'Office Items', value: `${office.floorItems.length + office.wallItems.length} placed`, color: '#EC4899' },
               { label: 'Active Bots', value: `${activeAutos} running`, color: '#10B981' },
               { label: 'Skills Unlocked', value: `${player.unlockedSkills.length}`, color: '#A78BFA' },
             ].map(stat => (

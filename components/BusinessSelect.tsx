@@ -54,7 +54,7 @@ export default function BusinessSelect() {
             aria-label={`Select ${biz.name}`}
           >
             <div className="flex items-start gap-3">
-              <span className="text-3xl mt-0.5">{biz.emoji}</span>
+              <div className="w-10 h-10 rounded-xl flex-shrink-0 mt-0.5" style={{ background: 'linear-gradient(135deg, #7C3AED, #4C1D95)', border: '2px solid rgba(139,92,246,0.4)' }} />
               <div>
                 <div className="text-white font-black text-base">{biz.name}</div>
                 <div className="text-slate-300 text-sm mt-0.5">{biz.description}</div>

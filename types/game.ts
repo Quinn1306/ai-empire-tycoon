@@ -7,23 +7,14 @@ export type WallStyle = 'white' | 'blue' | 'green' | 'dark';
 export type FloorStyle = 'wood' | 'carpet' | 'tile' | 'marble';
 export type Screen = 'loading' | 'character-creation' | 'business-select' | 'game' | 'end';
 export type Panel = 'none' | 'work' | 'shop' | 'skills' | 'character' | 'automation';
-export type ShopTab = 'equipment' | 'furniture' | 'decor';
+export type ShopTab = 'equipment' | 'furniture' | 'wall-decor' | 'skins';
+export type ItemMount = 'floor' | 'wall';
 
 export interface Appearance {
   skinTone: SkinTone;
   hairStyle: HairStyle;
   hairColor: HairColor;
   outfitId: OutfitId;
-}
-
-export interface SkillNode {
-  id: string;
-  name: string;
-  description: string;
-  branch: 'hustle' | 'tech' | 'business';
-  cost: number;
-  effect: string;
-  requires: string | null;
 }
 
 export interface Player {
@@ -59,7 +50,8 @@ export interface PlacedItem {
 }
 
 export interface Office {
-  placedItems: PlacedItem[];
+  floorItems: PlacedItem[];
+  wallItems: PlacedItem[];
   wallStyle: WallStyle;
   floorStyle: FloorStyle;
 }
@@ -83,6 +75,11 @@ export interface FloatingText {
   color: string;
 }
 
+export interface PendingPlacement {
+  itemId: string;
+  mount: ItemMount;
+}
+
 export interface GameState {
   screen: Screen;
   activePanel: Panel;
@@ -94,6 +91,7 @@ export interface GameState {
   automations: Automation[];
   floatingTexts: FloatingText[];
   pendingLevelUp: number | null;
+  pendingPlacement: PendingPlacement | null;
   meta: {
     lastSavedAt: number;
     lastSeenAt: number;

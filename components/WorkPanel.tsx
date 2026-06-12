@@ -58,7 +58,7 @@ export default function WorkPanel() {
       <div className="flex items-center justify-between px-4 pt-4 pb-2">
         <div>
           <div className="flex items-center gap-2">
-            <span className="text-xl">{bizDef.emoji}</span>
+            <div className="w-5 h-5 rounded-full" style={{ background: '#7C3AED' }} />
             <h2 className="text-white font-black text-base">{bizDef.name}</h2>
           </div>
           <p className="text-violet-400 text-xs mt-0.5">
@@ -86,11 +86,11 @@ export default function WorkPanel() {
         >
           <div className="flex items-center justify-between mb-2">
             <div className="flex items-center gap-2">
-              <span className="text-lg">{activeTaskDef.emoji}</span>
+              <div className="w-2 h-2 rounded-full animate-pulse" style={{ background: '#F59E0B' }} />
               <span className="text-white font-bold text-sm">{activeTaskDef.name}</span>
             </div>
             <div className="flex items-center gap-2">
-              <span className="text-amber-300 font-black text-sm">⏱ {remaining}s</span>
+              <span className="text-amber-300 font-black text-sm">{remaining}s left</span>
               <button
                 onClick={cancelTask}
                 className="text-xs text-red-400 hover:text-red-300 px-2 py-0.5 rounded-lg"
@@ -151,16 +151,16 @@ export default function WorkPanel() {
             >
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <span className="text-lg">{task.emoji}</span>
+                  <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: locked ? '#475569' : '#10B981' }} />
                   <div>
                     <div className="text-sm font-bold text-white">
                       {task.name}
                       {locked && (
-                        <span className="ml-1 text-xs text-slate-500">🔒 Lv.{task.levelRequired}</span>
+                        <span className="ml-1 text-xs text-slate-500">Lv.{task.levelRequired}</span>
                       )}
                     </div>
                     <div className="text-xs text-slate-400 mt-0.5">
-                      ⏱ {speededDuration}s · +{task.baseXP} XP
+                      {speededDuration}s · +{task.baseXP} XP
                     </div>
                   </div>
                 </div>

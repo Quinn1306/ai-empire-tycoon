@@ -105,7 +105,7 @@ export default function AutomationPanel() {
             >
               <div className="flex items-start justify-between gap-2">
                 <div className="flex items-start gap-2.5 flex-1">
-                  <span className={`text-2xl ${active ? 'auto-active' : ''}`}>{def.emoji}</span>
+                  <div className={`w-8 h-8 rounded-lg flex items-center justify-center text-xs font-black ${active ? 'auto-active' : ''}`} style={{ background: active ? 'rgba(16,185,129,0.2)' : 'rgba(255,255,255,0.07)', border: `2px solid ${active ? '#10B981' : 'rgba(255,255,255,0.1)'}`, color: active ? '#10B981' : '#94A3B8', flexShrink: 0 }}>AI</div>
                   <div>
                     <div className="text-white font-black text-sm">{def.name}</div>
                     <div className="text-slate-400 text-xs mt-0.5">{def.description}</div>
