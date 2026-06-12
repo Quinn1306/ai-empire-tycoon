@@ -34,6 +34,9 @@ export default function CharacterCreation() {
           AI EMPIRE TYCOON
         </h1>
         <p className="text-violet-400 text-sm font-medium mt-1">Create your entrepreneur</p>
+        <span className="inline-block mt-2 text-xs font-bold px-2 py-0.5 rounded-full" style={{ background: 'rgba(124,58,237,0.3)', border: '1px solid #7C3AED', color: '#A78BFA' }}>
+          v3 — Sprites Update
+        </span>
       </div>
 
       {/* Preview */}
