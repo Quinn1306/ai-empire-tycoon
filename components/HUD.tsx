@@ -109,6 +109,9 @@ export default function HUD() {
         </div>
       </div>
 
+      {/* Version stamp */}
+      <div className="absolute top-1 left-1/2 -translate-x-1/2 text-[8px] text-slate-700 font-mono select-none pointer-events-none" aria-hidden="true">v3</div>
+
       {/* Nav buttons */}
       <nav
         className="flex items-center gap-1 px-2 pb-2 overflow-x-auto"
